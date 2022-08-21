@@ -46,10 +46,13 @@ async def regroup(ctx, player_list, number_of_groups: int = 2):
 
 @client.command()
 async def roll(ctx, number: int = 1):
-    dice = [
-        str(random.choice(range(1, 7)))
-        for _ in range(number)
-    ]
-    await ctx.send(', '.join(dice))
+    if number == 1:
+        await ctx.send(file=nextcord.File(f'./images/dice/{random.choice(range(1, 7))}.png'))
+    else:
+        dice = [
+            str(random.choice(range(1, 7)))
+            for _ in range(number)
+        ]
+        await ctx.send(', '.join(dice))
 
 client.run(TOKEN)
