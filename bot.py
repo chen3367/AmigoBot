@@ -20,7 +20,7 @@ async def on_ready():
 async def help(ctx):
     response = []
     response.append('\n'.join(['`!regroup [名字(逗號分開)] [幾組(default=2)]`', '分組']))
-    response.append('\n'.join(['`!roll [幾顆(default=1)]`', '骰骰子']))
+    response.append('\n'.join(['`!roll [幾顆(default=1, 不超過6)]`', '骰骰子']))
     await ctx.send('\n\n'.join(response))
 
 @client.command()
@@ -46,13 +46,13 @@ async def regroup(ctx, player_list, number_of_groups: int = 2):
 
 @client.command()
 async def roll(ctx, number: int = 1):
-    if number == 1:
-        await ctx.send(file=nextcord.File(f'./images/dice/{random.choice(range(1, 7))}.png'))
-    else:
-        dice = [
-            str(random.choice(range(1, 7)))
+    if number <= 6:
+        dices = [
+            f'./images/dice/{random.choice(range(1, 7))}.png'
             for _ in range(number)
         ]
-        await ctx.send(', '.join(dice))
+        await ctx.send(files=[nextcord.File(dice) for dice in dices])
+    else:
+        await ctx.send('骰子數不能超過6')
 
 client.run(TOKEN)
