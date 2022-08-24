@@ -1,3 +1,4 @@
+import asyncio
 import random
 import os
 import nextcord
@@ -10,20 +11,20 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = nextcord.Intents.all()
 intents.members = True
-client = commands.Bot(command_prefix='!', help_command=None, intents=intents)
+bot = commands.Bot(command_prefix='!', help_command=None, intents=intents)
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'{client.user.name} has connected to Discord!')
+    print(f'{bot.user.name} has connected to Discord!')
 
-@client.command()
+@bot.command()
 async def help(ctx):
     response = []
     response.append('\n'.join(['`!regroup [名字(逗號分開)] [幾組(default=2)]`', '分組']))
     response.append('\n'.join(['`!roll [幾顆(default=1, 不超過6)]`', '骰骰子']))
     await ctx.send('\n\n'.join(response))
 
-@client.command()
+@bot.command()
 async def regroup(ctx, player_list, number_of_groups: int = 2):
     # Convert player list from a string into a list
     player_list = list(filter(None, player_list.split(',')))
@@ -44,7 +45,7 @@ async def regroup(ctx, player_list, number_of_groups: int = 2):
 
     await ctx.send('\n'.join(response))
 
-@client.command()
+@bot.command()
 async def roll(ctx, number: int = 1):
     if number <= 6:
         dices = [
@@ -55,4 +56,19 @@ async def roll(ctx, number: int = 1):
     else:
         await ctx.send('骰子數不能超過6')
 
-client.run(TOKEN)
+def load_cogs():
+    '''
+    The code in this function is executed whenever the bot will start.
+    '''
+    for file in os.listdir(f'./cogs'):
+        if file.endswith('.py'):
+            extension = file[:-3]
+            try:
+                bot.load_extension(f'cogs.{extension}')
+                print(f"Loaded extension '{extension}'")
+            except Exception as e:
+                exception = f'{type(e).__name__}: {e}'
+                print(f'Failed to load extension {extension}\n{exception}')
+
+load_cogs()
+bot.run(TOKEN)
