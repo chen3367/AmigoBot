@@ -14,8 +14,8 @@ class helper():
         Compoose command, parm, and description to a readable format
         '''
         c1 = f'!{command}'
-        c2 = f'`{parm}`'
-        return f'{c1} {c2}' + '\n' + description
+        c2 = f' {parm}' if parm else ''
+        return f'`{c1}{c2}`' + '\n' + description
     
     def response(self):
         res = []

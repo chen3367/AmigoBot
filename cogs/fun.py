@@ -8,6 +8,11 @@ class Fun(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    async def lucky(self, ctx):
+        online_members = list(filter(lambda x: x.status != nextcord.Status.offline and not x.bot, ctx.guild.members))
+        await ctx.send(f'Congratulations {random.choice(online_members).mention}!!')
+
+    @commands.command()
     async def regroup(self, ctx, player_list, number_of_groups: int = 2):
         # Convert player list from a string into a list
         player_list = list(filter(None, player_list.split(',')))
