@@ -1,24 +1,20 @@
 class helper():
     def __init__(self):
         self.commands = []
-        self.parms = []
         self.descriptions = []
     
-    def add(self, command, parm, description):
+    def add(self, command, description):
         self.commands.append(command)
-        self.parms.append(parm)
         self.descriptions.append(description)
 
-    def compose(self, command, parm, description):
+    def compose(self, command, description):
         '''
-        Compoose command, parm, and description to a readable format
+        Compoose command and description to a readable format
         '''
-        c1 = f'!{command}'
-        c2 = f' {parm}' if parm else ''
-        return f'`{c1}{c2}`' + '\n' + description
+        return f'`!{command}`' + '\n' + description
     
     def response(self):
         res = []
-        for c, p, d in zip(self.commands, self.parms, self.descriptions):
-            res.append(self.compose(c, p, d))
+        for c, d in zip(self.commands, self.descriptions):
+            res.append(self.compose(c, d))
         return '\n\n'.join(res)
