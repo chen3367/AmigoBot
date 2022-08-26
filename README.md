@@ -13,3 +13,6 @@ Say hello to Amigo
 
 `!invite_amigo`</br>
 Generate an invite link of Amigo Helper
+
+`!ptt <board> <keyword> <n_pages>`</br>
+Retrieve titles and urls from ptt by keyword
