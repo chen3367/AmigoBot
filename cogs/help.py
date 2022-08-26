@@ -8,7 +8,7 @@ class Help(commands.Cog):
 
     @commands.command(description = 'Help command for Amigo Helper')
     async def help(self, ctx):
-        embed = nextcord.Embed(title = 'Amigo Helper!', description = 'Help command for Amigo Helper')
+        embed = nextcord.Embed(title = 'Amigo Helper', description = 'Help command for Amigo Helper!!')
         for command in self.bot.walk_commands():
             description = command.description
             if not description:
