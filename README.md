@@ -1,5 +1,5 @@
 # Discord Bot
-`!regroup <ID1,ID2,...> <n_groups>`</br>
+`!regroup <name1,name2,...> <n_groups>`</br>
 Regroup into n groups
 
 `!roll <number>`</br>
