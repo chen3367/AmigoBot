@@ -13,7 +13,7 @@ class Help(commands.Cog):
             description = command.description
             if not description:
                 description = 'No description provided'
-            embed.add_field(name = f'!{command.name}', value = description)
+            embed.add_field(name = f'!{command.brief if command.brief else command.name}', value = description)
         await ctx.send(embed=embed)
 
 def setup(bot: Bot):

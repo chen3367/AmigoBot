@@ -7,7 +7,7 @@ class Image(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
-    @commands.command(name = 'roll <number>', description = 'Roll n dices (must less than 7)')
+    @commands.command(brief = 'roll <number>', description = 'Roll n dices (must less than 7), default number = 1')
     async def roll(self, ctx, number: int = 1):
         if number < 7:
             dices = [

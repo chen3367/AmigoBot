@@ -12,7 +12,7 @@ class Fun(commands.Cog):
         online_members = list(filter(lambda x: x.status != nextcord.Status.offline and not x.bot, ctx.guild.members))
         await ctx.send(f'Congratulations {random.choice(online_members).mention}!!')
 
-    @commands.command(name = 'regroup <name1,name2,...> <n_groups>', description = 'Regroup into n groups')
+    @commands.command(brief = 'regroup <name1,name2,...> <n_groups>', description = 'Regroup into n groups, default n_groups = 2')
     async def regroup(self, ctx, player_list, number_of_groups: int = 2):
         # Convert player list from a string into a list
         player_list = list(filter(None, player_list.split(',')))

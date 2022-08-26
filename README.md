@@ -1,9 +1,9 @@
 # Discord Bot
 `!regroup <name1,name2,...> <n_groups>`</br>
-Regroup into n groups
+Regroup into n groups, default n_groups = 2
 
 `!roll <number>`</br>
-Roll n dices (must less than 7)
+Roll n dices (must less than 7), default number = 1
 
 `!raffle`</br>
 Select a winner online

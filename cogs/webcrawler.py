@@ -118,8 +118,8 @@ class Ptt(commands.Cog):
 
         return titles, prices, urls
 
-    @commands.command(name = 'ptt <board> <keyword> <n_pages>', description = 'Retrieve titles and urls from ptt by keyword')
-    async def ptt(self, ctx, board, keyword, n):
+    @commands.command(brief = 'ptt <board> <keyword> <n_pages>', description = 'Retrieve titles and urls from ptt by keyword, default n_pages = 3')
+    async def ptt(self, ctx, board, keyword, n = 3):
         reply = [f'★看板：{board}；關鍵字：{keyword}']
         titles, prices, urls = self.getdata(board, keyword, n)
 
