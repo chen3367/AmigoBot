@@ -1,9 +1,15 @@
 # Discord Bot
-`!regroup [名字(逗號分開)] [幾組(default=2)]`</br>
-分組
+`!regroup <ID1,ID2,...> <n_groups>`</br>
+Regroup into n groups
 
-`!roll [幾顆(default=1, 不超過6)]`</br>
-骰骰子
+`!roll <number>`</br>
+Roll n dices (must less than 7)
 
-`!lucky`</br>
-選出在線的幸運兒
+`!raffle`</br>
+Select a winner online
+
+`!hello`</br>
+Say hello to Amigo
+
+`!invite_amigo`</br>
+Generate an invite link of Amigo Helper

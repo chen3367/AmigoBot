@@ -12,7 +12,7 @@ class Greetings(commands.Cog):
         if channel is not None:
             await channel.send(f'Welcome {member.mention}.')
 
-    @commands.command(aliases = ['Hello', 'HELLO', 'HI', 'Hi', 'hi', '哈囉', '安安', '嗨', '你好'])
+    @commands.command(description = 'Say hello to Amigo', aliases = ['Hello', 'HELLO', 'HI', 'Hi', 'hi', '哈囉', '安安', '嗨', '你好'])
     async def hello(self, ctx):
         await ctx.send('Hello!')
     

@@ -16,15 +16,6 @@ bot = commands.Bot(command_prefix='!', help_command=None, intents=intents)
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
-from function.helper import *
-h = helper()
-h.add('regroup [名字(逗號分開)] [幾組(default=2)]', '分組')
-h.add('roll [幾顆(default=1, 不超過6)]', '骰骰子')
-h.add('lucky', '選出在線的幸運兒')
-
-@bot.command()
-async def help(ctx):
-    await ctx.send(h.response())
 
 def load_cogs():
     '''
