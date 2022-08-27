@@ -138,7 +138,8 @@ class Ptt(commands.Cog):
         
         else:
             print(f'Successfully retrieved {len(reply)-1} threads!')
-            await ctx.send('\n\n'.join(reply))
+            print(reply)
+            await ctx.send(('\n' + '-' * 80 +'\n').join(reply))
 
 def setup(bot: Bot):
     bot.add_cog(Ptt(bot))
