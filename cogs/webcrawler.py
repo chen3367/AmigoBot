@@ -44,7 +44,7 @@ class Bs(commands.Cog):
         for _ in range(10):
             if len(driver.find_element(By.ID, 'content').text) > 0:
                 output = driver.find_element(By.ID, 'content').text
-                print('Success')
+                print('Bullshit successfully')
                 driver.quit()
                 return output
             time.sleep(1)
@@ -56,6 +56,7 @@ class Bs(commands.Cog):
 
     @commands.command(brief='唬爛 <關鍵字> <字數要求(上限1000)>', aliases = ['唬爛'], description='唬爛產生器，Amigo唬爛給你聽')
     async def bs(self, ctx, topic, minlen: int = 10):
+        print('Start to bullshit...')
         output = self.get_text(topic, minlen)
         await ctx.send(output)
 
