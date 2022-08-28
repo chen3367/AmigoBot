@@ -8,6 +8,53 @@ from urllib.parse import quote
 from function.bopomofo import main
 from itertools import zip_longest
 
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+import time
+
+def chrome_driver():
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("disable-dev-shm-usage")
+    return webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = chrome_options)
+
+class Bs(commands.Cog):
+    def __init__(self, bot: Bot) -> None:
+        self.bot = bot
+
+    @commands.command(brief='唬爛 <關鍵字> <字數要求(上限1000)>', aliases = ['唬爛'], description='唬爛產生器，Amigo唬爛給你聽')
+    async def bs(self, ctx, topic, minlen: int = 10):
+        driver = chrome_driver()
+
+        # Direct to 唬爛產生器
+        driver.get('https://howtobullshit.me/')
+
+        # 標題
+        topic = driver.find_element(By.ID, 'topic')
+        topic.send_keys('楓之谷')
+        
+        # 字數要求
+        minlen = driver.find_element(By.ID, 'minlen')
+        minlen.send_keys(10)
+
+        # 產生(timeout 10 seconds)
+        generate = driver.find_element(By.XPATH, '/html/body/main/div/blockquote[2]/div/a')
+        generate.click()
+        timeout = 10
+        for _ in range(10):
+            if len(driver.find_element(By.ID, 'content').text) > 0:
+                output = driver.find_element(By.ID, 'content').text.strip()
+                print('Success')
+                driver.quit()
+                await ctx.send(output)
+            time.sleep(1)
+        else:
+            driver.quit()
+            await ctx.send(f'Timeout ({timeout} seconds)')
+
 class Ptt(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
@@ -143,3 +190,4 @@ class Ptt(commands.Cog):
 
 def setup(bot: Bot):
     bot.add_cog(Ptt(bot))
+    bot.add_cog(Bs(bot))
