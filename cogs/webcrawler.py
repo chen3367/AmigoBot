@@ -14,22 +14,19 @@ from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-def chrome_driver():
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("disable-dev-shm-usage")
-    return webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = chrome_options)
-
 class Bs(commands.Cog):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
 
-    @commands.command(brief='唬爛 <關鍵字> <字數要求(上限1000)>', aliases = ['唬爛'], description='唬爛產生器，Amigo唬爛給你聽')
-    async def bs(self, ctx, topic, minlen: int = 10):
-        driver = chrome_driver()
+    def get_text(self, topic, minlen):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("disable-dev-shm-usage")
+        driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = chrome_options)
 
-        # Direct to 唬爛產生器
+         # Direct to 唬爛產生器
         driver.get('https://howtobullshit.me/')
 
         # 標題
@@ -46,14 +43,21 @@ class Bs(commands.Cog):
         timeout = 10
         for _ in range(10):
             if len(driver.find_element(By.ID, 'content').text) > 0:
-                output = driver.find_element(By.ID, 'content').text.strip()
+                output = driver.find_element(By.ID, 'content').text
                 print('Success')
                 driver.quit()
-                await ctx.send(output)
+                return output
             time.sleep(1)
         else:
+            output = f'Timeout ({timeout} seconds)'
+            print(output)
             driver.quit()
-            await ctx.send(f'Timeout ({timeout} seconds)')
+            return output
+
+    @commands.command(brief='唬爛 <關鍵字> <字數要求(上限1000)>', aliases = ['唬爛'], description='唬爛產生器，Amigo唬爛給你聽')
+    async def bs(self, ctx, topic, minlen: int = 10):
+        output = self.get_text(topic, minlen)
+        await ctx.send(output)
 
 class Ptt(commands.Cog):
     def __init__(self, bot: Bot) -> None:
