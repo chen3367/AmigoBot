@@ -16,6 +16,10 @@ bot = commands.Bot(command_prefix='!', help_command=None, intents=intents)
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
+@bot.command()
+async def say(ctx, msg, channel: int = 784801779320619030):
+    channel = bot.get_channel(channel)
+    await channel.send(msg)
 
 def load_cogs():
     '''
