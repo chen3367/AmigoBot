@@ -33,12 +33,12 @@ class Bs(commands.Cog):
         driver.get('https://howtobullshit.me/')
 
         # 標題
-        topic = driver.find_element(By.ID, 'topic')
-        topic.send_keys('楓之谷')
+        t = driver.find_element(By.ID, 'topic')
+        t.send_keys(topic)
         
         # 字數要求
-        minlen = driver.find_element(By.ID, 'minlen')
-        minlen.send_keys(10)
+        m = driver.find_element(By.ID, 'minlen')
+        m.send_keys(minlen)
 
         # 產生(timeout 10 seconds)
         generate = driver.find_element(By.XPATH, '/html/body/main/div/blockquote[2]/div/a')
