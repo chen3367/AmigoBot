@@ -43,7 +43,7 @@ class Bs(commands.Cog):
         timeout = 10
         for _ in range(10):
             if len(driver.find_element(By.ID, 'content').text) > 0:
-                output = driver.find_element(By.ID, 'content').text
+                output = driver.find_element(By.ID, 'content').text.replace(' ', '')
                 print('Bullshit successfully')
                 driver.quit()
                 return output
