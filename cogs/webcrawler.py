@@ -26,7 +26,7 @@ class Bs(commands.Cog):
         chrome_options.add_argument("disable-dev-shm-usage")
         driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = chrome_options)
 
-         # Direct to 唬爛產生器
+        # Direct to 唬爛產生器
         driver.get('https://howtobullshit.me/')
 
         # 標題

@@ -16,3 +16,6 @@ Generate an invite link of Amigo Helper
 
 `!ptt <board> <keyword> <n_pages>`</br>
 Retrieve titles and urls from ptt by keyword
+
+`!唬爛 <關鍵字> <字數要求(上限1000)>`</br>
+唬爛產生器，Amigo唬爛給你聽

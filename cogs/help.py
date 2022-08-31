@@ -10,7 +10,7 @@ class Help(commands.Cog):
     async def help(self, ctx):
         embed = nextcord.Embed(title = 'Amigo Helper', description = 'Help command for Amigo Helper!!')
         for command in self.bot.walk_commands():
-            if command.name != 'say':
+            if not command.hidden:
                 description = command.description
                 if not description:
                     description = 'No description provided'
