@@ -17,7 +17,7 @@ async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
 @bot.command()
-async def say(ctx, msg, channel: int = 784801779320619030):
+async def say(ctx, msg, channel: int = 1004062992301830278):
     channel = bot.get_channel(channel)
     await channel.send(msg)
 
