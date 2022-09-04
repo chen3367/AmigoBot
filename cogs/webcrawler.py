@@ -3,8 +3,7 @@ from nextcord.ext import commands
 from nextcord.ext.commands import Bot
 
 import bs4
-import urllib.request as req
-from urllib.parse import quote
+import requests
 from function.bopomofo import main
 from itertools import zip_longest
 
@@ -83,18 +82,11 @@ class Ptt(commands.Cog):
         """
         Read the content of an url
         """    
-        request=req.Request(url, headers={
-            "cookie":"over18=1",
-            "user-agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Mobile Safari/537.36"
-        })
-        try:
-            with req.urlopen(request) as response:
-                data = response.read()
-
-            root = bs4.BeautifulSoup(data, "html.parser")
-            return root
-        except:
-            return False
+        web = requests.get(url, headers = {'cookie':'over18=1'})
+        if web.status_code == 404: return False
+        data = web.text
+        root = bs4.BeautifulSoup(data, 'html.parser')
+        return root
 
     def getvalue(self, text, string):
         """
@@ -190,8 +182,9 @@ class Ptt(commands.Cog):
         
         else:
             print(f'Successfully retrieved {len(reply)-1} threads!')
+            reply = ('\n' + '-' * 80 +'\n').join(reply)
             print(reply)
-            await ctx.send(('\n' + '-' * 80 +'\n').join(reply))
+            await ctx.send(reply)
 
 def setup(bot: Bot):
     bot.add_cog(Ptt(bot))
