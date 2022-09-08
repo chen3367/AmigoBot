@@ -84,7 +84,7 @@ class Wife(commands.Cog):
             p.click()
 
         img = driver.find_element(By.XPATH, '/html/body/div/div/div/div[1]/img')
-        time.sleep(0.5)
+        time.sleep(1)
         img.screenshot('images/screenshot.png')
     
     @commands.command(description='二次元老婆產生器')
