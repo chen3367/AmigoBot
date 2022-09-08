@@ -57,7 +57,7 @@ class Bs(commands.Cog):
 
     @commands.command(brief='唬爛 <關鍵字> <字數要求(上限1000)>', aliases = ['唬爛'], description='唬爛產生器，Amigo唬爛給你聽')
     async def bs(self, ctx, topic, minlen: int = 10):
-        print('Start to bullshit...')
+        await ctx.send('唬爛中...')
         output = self.get_text(topic, minlen)
         await ctx.send(output)
 
@@ -84,7 +84,7 @@ class Wife(commands.Cog):
             p.click()
 
         img = driver.find_element(By.XPATH, '/html/body/div/div/div/div[1]/img')
-        time.sleep(1)
+        time.sleep(2)
         img.screenshot('images/screenshot.png')
     
     @commands.command(description='二次元老婆產生器')
@@ -198,7 +198,8 @@ class Ptt(commands.Cog):
 
     @commands.command(brief = 'ptt <board> <keyword> <n_pages>', description = 'Retrieve titles and urls from ptt by keyword, default n_pages = 3')
     async def ptt(self, ctx, board, keyword, n = 3):
-        reply = [f'★看板：{board}；關鍵字：{keyword}']
+        await ctx.send(f'★看板：{board}；關鍵字：{keyword} 搜尋中...')
+        reply = []
         titles, prices, urls = self.getdata(board, keyword, n)
 
         for i, (title, price, url) in enumerate(zip_longest(titles, prices, urls)):
@@ -210,12 +211,12 @@ class Ptt(commands.Cog):
             reply_list.append(f'網址：{url}')
             reply.append('\n'.join(reply_list))
 
-        if len(reply) == 1:
+        if not reply:
             print('No data found!')
             await ctx.send('No data found!')
         
         else:
-            print(f'Successfully retrieved {len(reply)-1} threads!')
+            print(f'Successfully retrieved {len(reply)} threads!')
             reply = ('\n' + '-' * 80 +'\n').join(reply)
             print(reply)
             await ctx.send(reply)
