@@ -10,6 +10,8 @@ from itertools import zip_longest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
@@ -58,6 +60,38 @@ class Bs(commands.Cog):
         print('Start to bullshit...')
         output = self.get_text(topic, minlen)
         await ctx.send(output)
+
+class Wife(commands.Cog):
+    def __init__(self, bot: Bot) -> None:
+        self.bot = bot
+
+    def get_wife(self):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("disable-dev-shm-usage")
+        driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options = chrome_options)
+
+        driver.get('https://waifulabs.com/generate')
+
+        portrait = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.XPATH, '/html/body/div/div/div/div[2]/div/div[2]'))
+        )
+        portrait.click()
+        for _ in range(3):
+            p = driver.find_element(By.XPATH, '/html/body/div/div/div/div[3]/div/div[2]')
+            p.click()
+
+        img = driver.find_element(By.XPATH, '/html/body/div/div/div/div[1]/img')
+        time.sleep(0.5)
+        img.screenshot('images/screenshot.png')
+    
+    @commands.command(description='二次元老婆產生器')
+    async def wife(self, ctx):
+        await ctx.send('生成中...')
+        self.get_wife()
+        await ctx.send(file = nextcord.File('images/screenshot.png'))
 
 class Ptt(commands.Cog):
     def __init__(self, bot: Bot) -> None:
@@ -189,3 +223,4 @@ class Ptt(commands.Cog):
 def setup(bot: Bot):
     bot.add_cog(Ptt(bot))
     bot.add_cog(Bs(bot))
+    bot.add_cog(Wife(bot))
