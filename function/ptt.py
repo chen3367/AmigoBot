@@ -60,7 +60,7 @@ def getprice(url):
 
     return price
 
-def getdatabyindex(index, board, keyword, titles = [], prices = [], urls = []):
+def getdatabyindex(index, board, keyword, titles, prices, urls):
     url = f"https://www.ptt.cc/bbs/{board}/index{index}.html"
     root = readurl(url)
 
@@ -92,5 +92,5 @@ def getdata(board, keyword, n):
     reply = []
     index = get_index(board, n)
     print(f"Start searching keyword '{keyword}' on board {board} in the latest {n} pages...")
-    titles, prices, urls = getdatabyindex(index, board, keyword)
+    titles, prices, urls = getdatabyindex(index, board, keyword, [], [], [])
     return titles, prices, urls
