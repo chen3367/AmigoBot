@@ -25,40 +25,18 @@ def readurl(url):
     root = bs4.BeautifulSoup(data, 'html.parser')
     return root
 
-def getvalue(text, string):
-    """
-    Get the value of a given text(key)
-    """
-    try:
-        text = text.replace(' ', '').replace('\n', ', ')
-        string_index = text.index(f'【{string}】')
-        start_index = text.index('：', string_index) + 1
-        end_index = text.index(', , ', start_index + 1)
-        value = text[start_index:end_index].strip(', ')
-        if '★' in value:
-            index = value.find('★')
-            value = value[:index].strip(',').strip(', ')
-        if '【' in value:
-            index = value.find('【')
-            value = value[:index].strip(',').strip(', ')
-        return value
-    except:
-        return ''
-
-def getprice(url):
-    """
-    Get price
-    """
+def getprice(url, board):
     root = readurl(url)
-    content = root.find("div", class_ = 'bbs-screen bbs-content')
-
-    # get content text
+    content = root.find('div', class_ = 'bbs-screen bbs-content')
     text = content.text
-
-    # get price
-    price = getvalue(text, '售價')
-
-    return price
+    try:
+        text = text.replace(' ', '')
+        start_index = text.index('【售價】' if board == 'gamesale' else '[售價]') + 4 + int(board == 'gamesale')
+        end_index = text.index('★' if board == 'gamesale' else '[', start_index)
+        value = text[start_index:end_index].strip('\n')
+        return '\n' + value if '\n' in value else value
+    except Exception as Ex:
+        return str(Ex)
 
 def getdatabyindex(index, board, keyword, titles, prices, urls):
     url = f"https://www.ptt.cc/bbs/{board}/index{index}.html"
@@ -81,12 +59,24 @@ def getdatabyindex(index, board, keyword, titles, prices, urls):
             href = "https://www.ptt.cc" + article.find("div", class_ = "title").a.get("href")
             titles.append(title)
             urls.append(href)
-            if board.lower() == 'gamesale':
-                price = '非販售文' if '售' not in title else getprice(href)
+            if board.lower() in ('gamesale', 'macshop'):
+                price = '非販售文' if '售' not in title else getprice(href, board)
                 prices.append(price)
     
     # Direct to next page
     return getdatabyindex(str(int(index) + 1), board, keyword, titles, prices, urls)
+
+def formatted_reply(titles, prices, urls):
+    reply = []
+    for i, (title, price, url) in enumerate(zip_longest(titles, prices, urls)):
+        reply_list = []
+        reply_list.append(f'標題：{title}')
+        if prices:
+            reply_list.append(f'價格：{price}')
+        reply_list.append(f'網址：{url}')
+        reply.append('\n'.join(reply_list))
+    reply = ('\n' + '-' * 80 +'\n').join(reply)
+    return reply
 
 def getdata(board, keyword, n):
     reply = []

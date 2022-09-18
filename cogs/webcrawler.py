@@ -5,7 +5,7 @@ from nextcord.ext.commands import Bot
 import bs4
 import requests
 from function.bopomofo import main
-from function.ptt import getdata
+from function.ptt import formatted_reply, getdata
 from itertools import zip_longest
 
 from selenium import webdriver
@@ -101,17 +101,8 @@ class Ptt(commands.Cog):
     @commands.command(brief = 'ptt <board> <keyword> <n_pages>', description = 'Retrieve titles and urls from ptt by keyword, default n_pages = 3')
     async def ptt(self, ctx, board, keyword, n = 3):
         await ctx.send(f'★看板：{board}；關鍵字：{keyword} 搜尋中...')
-        reply = []
         titles, prices, urls = getdata(board, keyword, n)
-
-        for i, (title, price, url) in enumerate(zip_longest(titles, prices, urls)):
-            reply_list = []
-            reply_list.append(f'標題：{title}')
-
-            if board.lower() == 'gamesale':
-                reply_list.append(f'價格：{price}')
-            reply_list.append(f'網址：{url}')
-            reply.append('\n'.join(reply_list))
+        reply = formatted_reply(titles, prices, urls)
 
         if not reply:
             print('No data found!')
@@ -119,7 +110,6 @@ class Ptt(commands.Cog):
         
         else:
             print(f'Successfully retrieved {len(reply)} threads!')
-            reply = ('\n' + '-' * 80 +'\n').join(reply)
             print(reply)
             await ctx.send(reply)
 
