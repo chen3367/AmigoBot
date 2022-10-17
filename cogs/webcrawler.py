@@ -87,6 +87,7 @@ class Wife(commands.Cog):
         img = driver.find_element(By.XPATH, '/html/body/div/div/div/div[1]/img')
         time.sleep(2)
         img.screenshot('images/screenshot.png')
+        driver.quit()
     
     @commands.command(description='二次元老婆產生器')
     async def wife(self, ctx):
