@@ -56,8 +56,8 @@ class Bs(commands.Cog):
             driver.quit()
             return output
 
-    @commands.command(brief='唬爛 <關鍵字> <字數要求(上限1000)>', aliases = ['唬爛'], description='唬爛產生器，Amigo唬爛給你聽')
-    async def bs(self, ctx, topic, minlen: int = 10):
+    @commands.command(brief='bs <keyword> <# of words(up to 1000 words)>', aliases = ['唬爛'], description='唬爛產生器，Amigo唬爛給你聽')
+    async def bs(self, ctx, topic, minlen: int = 100):
         await ctx.send('唬爛中...')
         output = self.get_text(topic, minlen)
         await ctx.send(output)

@@ -20,7 +20,7 @@ Retrieve titles and urls from ptt by keyword
 `!wife`</br>
 二次元老婆產生器
 
-`!bs <keyword> <# of words(up to 1000)>`</br>
+`!bs <keyword> <# of words(up to 1000 words)>`</br>
 唬爛產生器，Amigo唬爛給你聽
 
 # chatGPT-discord-bot
