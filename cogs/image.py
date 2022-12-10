@@ -1,7 +1,7 @@
-import nextcord
+import discord
 import random
-from nextcord.ext import commands
-from nextcord.ext.commands import Bot
+from discord.ext import commands
+from discord.ext.commands import Bot
 
 class Image(commands.Cog):
     def __init__(self, bot: Bot) -> None:
@@ -14,9 +14,9 @@ class Image(commands.Cog):
                 f'./images/dice/{random.choice(range(1, 7))}.png'
                 for _ in range(number)
             ]
-            await ctx.send(files=[nextcord.File(dice) for dice in dices])
+            await ctx.send(files=[discord.File(dice) for dice in dices])
         else:
             await ctx.send('骰子數不能超過6')
     
-def setup(bot: Bot):
-    bot.add_cog(Image(bot))
+async def setup(bot: Bot):
+    await bot.add_cog(Image(bot))

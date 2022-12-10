@@ -1,6 +1,6 @@
+discord.py==2.1.0
+revChatGPT==0.0.33.5
 beautifulsoup4==4.11.1
-nextcord==2.1.0
-python-dotenv==0.21.0
 requests==2.26.0
 selenium==4.6.0
 webdriver_manager==3.5.2

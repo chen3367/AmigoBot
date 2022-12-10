@@ -1,6 +1,6 @@
-import nextcord
-from nextcord.ext import commands
-from nextcord.ext.commands import Bot
+import discord
+from discord.ext import commands
+from discord.ext.commands import Bot
 
 import bs4
 import requests
@@ -93,7 +93,7 @@ class Wife(commands.Cog):
     async def wife(self, ctx):
         await ctx.send('生成中...')
         self.get_wife()
-        await ctx.send(file = nextcord.File('images/screenshot.png'))
+        await ctx.send(file = discord.File('images/screenshot.png'))
 
 class Ptt(commands.Cog):
     def __init__(self, bot: Bot) -> None:
@@ -114,7 +114,7 @@ class Ptt(commands.Cog):
             print(reply)
             await ctx.send(reply)
 
-def setup(bot: Bot):
-    bot.add_cog(Ptt(bot))
-    bot.add_cog(Bs(bot))
-    bot.add_cog(Wife(bot))
+async def setup(bot: Bot):
+    await bot.add_cog(Ptt(bot))
+    await bot.add_cog(Bs(bot))
+    await bot.add_cog(Wife(bot))

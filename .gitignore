@@ -1,3 +1,4 @@
-.env
-__pycache__
-screenshot.png
+__pycache__/
+config.json
+*.pyc
+*.log

@@ -1,7 +1,7 @@
-import nextcord
+import discord
 import random
-from nextcord.ext import commands
-from nextcord.ext.commands import Bot
+from discord.ext import commands
+from discord.ext.commands import Bot
 
 class Fun(commands.Cog):
     def __init__(self, bot: Bot) -> None:
@@ -9,7 +9,7 @@ class Fun(commands.Cog):
 
     @commands.command(description = 'Select a winner online')
     async def raffle(self, ctx):
-        online_members = list(filter(lambda x: x.status != nextcord.Status.offline and not x.bot, ctx.guild.members))
+        online_members = list(filter(lambda x: x.status != discord.Status.offline and not x.bot, ctx.guild.members))
         await ctx.send(f'Congratulations {random.choice(online_members).mention}!!')
 
     @commands.command(brief = 'regroup <name1,name2,...> <n_groups>', description = 'Regroup into n groups, default n_groups = 2')
@@ -33,5 +33,5 @@ class Fun(commands.Cog):
 
         await ctx.send('\n'.join(response))
     
-def setup(bot: Bot):
-    bot.add_cog(Fun(bot))
+async def setup(bot: Bot):
+    await bot.add_cog(Fun(bot))

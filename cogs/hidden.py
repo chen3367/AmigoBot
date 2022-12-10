@@ -1,6 +1,6 @@
-import nextcord
-from nextcord.ext import commands
-from nextcord.ext.commands import Bot
+import discord
+from discord.ext import commands
+from discord.ext.commands import Bot
 
 class Hidden(commands.Cog):
     def __init__(self, bot: Bot) -> None:
@@ -11,5 +11,5 @@ class Hidden(commands.Cog):
         channel = self.bot.get_channel(channel)
         await channel.send(msg)
 
-def setup(bot: Bot):
-    bot.add_cog(Hidden(bot))
+async def setup(bot: Bot):
+    await bot.add_cog(Hidden(bot))
