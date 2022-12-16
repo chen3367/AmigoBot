@@ -1,6 +1,5 @@
 {
     "discord_bot_token":"",
-    "session_token": "",
-    "cf_clearance": "",
-    "user_agent": ""
+    "discord_channel_id":"",
+    "openAI_key": ""
 }

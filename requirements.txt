@@ -1,6 +1,7 @@
 discord.py==2.1.0
-revChatGPT==0.0a42
+revChatGPT==0.0.44
 beautifulsoup4==4.11.1
 requests==2.26.0
 selenium==4.6.0
 webdriver_manager==3.5.2
+openai==0.25.0

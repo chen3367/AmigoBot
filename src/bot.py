@@ -1,4 +1,5 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 from src import responses
 from src import log
@@ -6,9 +7,10 @@ import os
 
 logger = log.setup_logger(__name__)
 
-data = responses.get_config()
+config = responses.get_config()
 
 isPrivate = False
+
 
 async def send_message(message, user_message):
     await message.response.defer(ephemeral=isPrivate)
@@ -28,26 +30,27 @@ async def send_message(message, user_message):
                 formatted_code_block = ""
                 for line in code_block:
                     while len(line) > 1900:
-                    # Split the line at the 50th character
+                        # Split the line at the 50th character
                         formatted_code_block += line[:1900] + "\n"
                         line = line[1900:]
-                    formatted_code_block += line + "\n" # Add the line and seperate with new line
+                    formatted_code_block += line + "\n"  # Add the line and seperate with new line
 
                 # Send the code block in a separate message
                 if (len(formatted_code_block) > 2000):
-                    code_block_chunks = [formatted_code_block[i:i+1900] for i in range(0, len(formatted_code_block), 1900)]
+                    code_block_chunks = [formatted_code_block[i:i+1900]
+                                         for i in range(0, len(formatted_code_block), 1900)]
                     for chunk in code_block_chunks:
                         await message.followup.send("```" + chunk + "```")
                 else:
-                    await message.followup.send("```" + formatted_code_block + "```") 
+                    await message.followup.send("```" + formatted_code_block + "```")
 
                 # Send the remaining of the response in another message
-                
+
                 if len(parts) >= 3:
                     await message.followup.send(parts[2])
             else:
                 response_chunks = [response[i:i+1900]
-                               for i in range(0, len(response), 1900)]
+                                   for i in range(0, len(response), 1900)]
                 for chunk in response_chunks:
                     await message.followup.send(chunk)
         else:
@@ -56,7 +59,7 @@ async def send_message(message, user_message):
         await message.followup.send("> **Error: Something went wrong, please try again later!**")
         logger.exception(f"Error while sending message: {e}")
 
-async def send_start_prompt() :
+async def send_start_prompt(client):
     config_dir = os.path.abspath(__file__ + "/../../")
     prompt_name = 'starting-prompt.txt'
     prompt_path = os.path.join(config_dir, prompt_name)
@@ -66,6 +69,9 @@ async def send_start_prompt() :
                 prompt = f.read()
                 logger.info(f"Send starting prompt with size {len(prompt)}")
                 responseMessage = await responses.handle_response(prompt)
+                if(config['discord_channel_id']):
+                    channel = client.get_channel(int(config['discord_channel_id']))
+                    await channel.send(responseMessage)
             logger.info(f"Starting prompt response: {responseMessage}")
         else:
             logger.info(f"No {prompt_name}. Skip sending starting prompt.")
@@ -80,7 +86,7 @@ def run_discord_bot():
             
     @bot.event
     async def on_ready():
-        await send_start_prompt()
+        await send_start_prompt(bot)
         await bot.tree.sync()
         for file in os.listdir(f'./cogs'):
             if file.endswith('.py'):
@@ -135,7 +141,14 @@ def run_discord_bot():
         await interaction.followup.send("> **Info: I have forgotten everything.**")
         logger.warning(
             "\x1b[31mChatGPT bot has been successfully reset\x1b[0m")
-        await send_start_prompt()
+        await send_start_prompt(bot)
 
-    TOKEN = data['discord_bot_token']
+    @bot.tree.command(name="help", description="Show help for the bot")
+    async def help(interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=False)
+        await interaction.followup.send(":star:**BASIC COMMANDS** \n    `/chat [message]` Chat with ChatGPT!\n    `/public` ChatGPT switch to public mode \n    For complete documentation, please visit https://github.com/Zero6992/chatGPT-discord-bot")
+        logger.info(
+            "\x1b[31mSomeone need help!\x1b[0m")
+
+    TOKEN = config['discord_bot_token']
     bot.run(TOKEN)

@@ -1,13 +1,5 @@
-from revChatGPT.revChatGPT import AsyncChatbot as Chatbot
+import openai
 import json
-
-
-async def handle_response(prompt) -> str:
-    chatbot.refresh_session()
-    response = await chatbot.get_chat_response(prompt, output="text")
-    responseMessage = response['message']
-
-    return responseMessage
 
 
 def get_config() -> dict:
@@ -18,17 +10,28 @@ def get_config() -> dict:
     config_path = os.path.join(config_dir, config_name)
 
     with open(config_path, 'r') as f:
-        data = json.load(f)
+        config = json.load(f)
 
-    return data
+    return config
 
 
-data = get_config()
+config = get_config()
+openai.api_key = config['openAI_key']
 
-config = {
-    "cf_clearance": data['cf_clearance'],
-    "user_agent": data['user_agent'],
-    "session_token" : data['session_token']
-}
 
-chatbot = Chatbot(config, conversation_id=None)
+async def handle_response(message) -> str:
+
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=message,
+        temperature=0.7,
+        max_tokens=2048,
+        top_p=1,
+        frequency_penalty=0.0,
+        presence_penalty=0.0,
+    )
+
+    # remove newline characters
+    responseMessage = response.choices[0].text.strip()
+
+    return responseMessage
